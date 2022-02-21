@@ -1,0 +1,62 @@
+-- Q1
+SELECT (E.FIRSTNAME || " " || E.LASTNAME) AS Employee_Name,
+  Count(I."InvoiceId") Invoices_number
+FROM Invoice I
+JOIN Customer C
+  ON I.CustomerId = C.CustomerId
+JOIN Employee E
+  ON C.SupportRepId = E.EmployeeId
+GROUP BY 1
+ORDER BY 2 DESC;
+
+
+-- Q2
+SELECT
+  A.Name Artist_Name,
+  T.Name Track_Name,
+  AA.Title Album_Name,
+  SUM(I.total) Total_USD,
+  IL.TrackId
+FROM Invoice I
+JOIN InvoiceLine IL
+  ON I.InvoiceId = Il.InvoiceId
+JOIN Track T
+  ON T.TrackId = IL.TrackId
+JOIN Genre G
+  ON G.GenreId = T.GenreId
+JOIN Album AA
+  ON T.AlbumId = AA.AlbumId
+JOIN Artist A
+  ON AA.ArtistId = A.ArtistId
+WHERE G.Name = "Rock"
+GROUP BY 5
+ORDER BY 4 DESC
+LIMIT 100;
+
+
+-- Q3
+SELECT
+  A.Name,
+  COUNT(T."TrackId") Tracks_number
+FROM Artist A
+JOIN Album AA
+  ON A.ArtistId = AA.ArtistId
+JOIN Track T
+  ON AA.AlbumId = T.AlbumId
+GROUP BY 1
+ORDER BY 2 DESC;
+
+
+-- Q4
+SELECT
+  (C.FirstName || " " || C.LastName) AS Customer_Name,
+  SUM("total") AS total_invoics,
+  C.City,
+  count(I.InvoiceId) As Invoice_Number,
+  I.CustomerId
+FROM Invoice I
+JOIN Customer C
+  ON I.CustomerId = C.CustomerId
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
